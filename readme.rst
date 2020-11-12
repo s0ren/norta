@@ -25,8 +25,8 @@ the API. This is on the larger end of what I feel comfortable publishing online.
 So if you wish for a copy please `send a DM or email me
 <https://bryanbrattlof.com/connect/>`__ and I'll gladly send it to you.
 
-Preparing The Data
-##################
+prepare-data.py
+###############
 
 `prepare-data.py <https://git.bryanbrattlof.com/norta/tree/prepare-data.py>`__:
 is a small script to convert the ``bus.log.tar.gz`` file into a CSV file named
@@ -53,12 +53,73 @@ is a small script to convert the ``bus.log.tar.gz`` file into a CSV file named
     )
     df.set_index('epoch')
 
-Base-map
-########
+usage
+-----
 
-**TODO**
+With the ``bus.log.tar.gz`` inside the ``data`` directory, simply run the python
+script to generate the ``bus.csv`` file inside the ``data`` directory like so:
 
-The full write-up is available at
+.. code-block::
+
+   $ python prepare-data.py
+
+There is no data cleaning involved. This script will only decompress and convert
+the log file into a csv file.
+
+basemap.py
+##########
+
+`basemap.py <https://git.bryanbrattlof.com/norta/tree/basemap.py>`__: is a simple
+module that downloads and combines OpenStreetMap tiles into one large image you
+can add to your matplotlib visuals.
+
+dependencies
+------------
+
+It assumes you have `requests <https://requests.readthedocs.io/en/master/>`__, and
+`pillow <https://python-pillow.org/>`__ libraries installed.
+
+usage
+-----
+
+To use this module, pass the bounding box in GPS coordinates of the area into
+the ``top``, ``rgt``, ``bot``, ``lef`` arguments along with the appropriate
+``zoom`` level:
+
+.. code-block:: python
+
+   import basemap
+
+   top, bot = df.lat.max(), df.lat.min()
+   lef, rgt = df.lon.min(), df.lon.max()
+
+   img = basemap.image(top, rgt, bot, lef, zoom=13)
+
+The module will return a ``Pillow.Image`` object that you can add to your
+matplotlib visuals like this:
+
+.. code-block:: python
+
+   from matplotlib import pyplot as plt
+   fig, ax = plt.subplots()
+   ax.imshow(img, extent=(lef, rgt, bot, top), aspect= 'equal')
+   plt.show()
+
+You can also use ``url`` to specify which tile servers you want to use:
+
+.. code-block:: python
+
+   img = basemap.image(top, rgt, bot, lef, zoom=13,
+       url="http://c.tile.stamen.com/toner/{z}/{x}/{y}.png")
+
+Any extra arguments to needed for the ``url`` argument can be passed along as key word arguments in the ``basemap.image()`` function. For example:
+
+.. code-block:: python
+
+   img = basemap.image(top, rgt, bot, lef, zoom=13, api=API_KEY
+       url="http://tileserver.example.com/{api}/{z}/{x}/{y}.png")
+
+The full write-up of how this module works is available at
 https://bryanbrattlof.com/adding-openstreetmaps-to-matplotlib/
 
 Contributing
