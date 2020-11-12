@@ -10,6 +10,13 @@ you are running at least Python 3.6. All other dependencies are listed in
 
    $ pip install -r requirements.txt
 
+The current versions that work on *my computer*\ :sup:`tm` are:
+
+- matplotlib=3.3.2
+- pandas=1.1.3
+- pillow=7.0.0
+- requests=2.24.0
+
 The Data-set
 ############
 
@@ -79,6 +86,10 @@ dependencies
 It assumes you have `requests <https://requests.readthedocs.io/en/master/>`__, and
 `pillow <https://python-pillow.org/>`__ libraries installed.
 
+.. code-block::
+
+   $ pip install requests pillow
+
 usage
 -----
 
@@ -95,7 +106,7 @@ the ``top``, ``rgt``, ``bot``, ``lef`` arguments along with the appropriate
 
    img = basemap.image(top, rgt, bot, lef, zoom=13)
 
-The module will return a ``Pillow.Image`` object that you can add to your
+The module will return a ``Pillow.Image()`` object that you can add to your
 matplotlib visuals like this:
 
 .. code-block:: python
@@ -112,15 +123,20 @@ You can also use ``url`` to specify which tile servers you want to use:
    img = basemap.image(top, rgt, bot, lef, zoom=13,
        url="http://c.tile.stamen.com/toner/{z}/{x}/{y}.png")
 
-Any extra arguments to needed for the ``url`` argument can be passed along as key word arguments in the ``basemap.image()`` function. For example:
+Any extra arguments to format the ``url`` argument can be passed along as key word arguments in the ``basemap.image()`` function. For example:
 
 .. code-block:: python
 
    img = basemap.image(top, rgt, bot, lef, zoom=13, api=API_KEY
        url="http://tileserver.example.com/{api}/{z}/{x}/{y}.png")
 
-The full write-up of how this module works is available at
-https://bryanbrattlof.com/adding-openstreetmaps-to-matplotlib/
+add-osm-to-mpl.py
+#################
+
+`add-osm-to-mpl.py <https://git.bryanbrattlof.com/norta/tree/add-osm-to-mpl.py>`__:
+holds all the example code and code to generate the visuals I used in my `Adding
+OpenStreetMaps To MatplotLib <https://bryanbrattlof.com/
+adding-openstreetmaps-to-matplotlib/>`__ article.
 
 Contributing
 ############
