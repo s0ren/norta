@@ -28,9 +28,9 @@ So if you wish for a copy please `send a DM or email me
 Preparing The Data
 ##################
 
-**prepare-data.py**: is a small script to convert the ``bus.log.tar.gz`` file
-into a CSV file named ``bus.csv`` that can be easily inserted into pandas using
-something like this:.
+`prepare-data.py <https://git.bryanbrattlof.com/norta/tree/prepare-data.py>`__:
+is a small script to convert the ``bus.log.tar.gz`` file into a CSV file named
+``bus.csv`` that can be easily inserted into pandas using something like this:.
 
 .. code-block:: python
 
