@@ -17,8 +17,8 @@ The current versions that work on *my computer*\ :sup:`tm` are:
 - pillow=7.0.0
 - requests=2.24.0
 
-The Data-set
-############
+The Data
+########
 
 A few years ago New Orleans, Louisiana published an API with the real time
 location of all the buses and streetcars they had in service for a new website
@@ -29,8 +29,10 @@ just under 360,000 responses from the API.
 The API returned a JSON response that I appended to a file called ``bus.log``
 that eventually grew to 5.2G (608M after being tar-balled) when I stopped polling
 the API. This is on the larger end of what I feel comfortable publishing online.
-So if you wish for a copy please `send a DM or email me
-<https://bryanbrattlof.com/connect/>`__ and I'll gladly send it to you.
+So I've published `the torrent file <https://git.bryanbrattlof.com/norta/plain/
+data/bus.log.tar.gz.torrent>`__ you can use to download the data, or if you
+need a direct copy please `DM (twitter) or email
+<https://bryanbrattlof.com/connect/>`__ me and I'll gladly send you a copy.
 
 prepare-data.py
 ###############
