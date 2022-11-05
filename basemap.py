@@ -29,6 +29,7 @@ def tile(session=None, **url_format_args):
         session = requests
 
     with session.get(url.format(**url_format_args)) as resp:
+        resp.raise_for_status()
         return Image.open(BytesIO(resp.content))
 
 

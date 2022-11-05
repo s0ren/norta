@@ -99,6 +99,7 @@ url = URL(x=x_tile, y=y_tile, z=zoom)
 
 # make the request
 with requests.get(url) as resp:
+    resp.raise_for_status()
     img = Image.open(BytesIO(resp.content))
 
 # plot the tile
