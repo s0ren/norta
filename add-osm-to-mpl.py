@@ -1,27 +1,45 @@
 import pandas as pd
 import os.path
 
-DATA_FILE = 'data/bus.csv'
-assert os.path.isfile(DATA_FILE) is True,\
-    "dataset not found! did you run 'prepare-data.py?"
+# DATA_FILE = 'data/bus.csv'
+# assert os.path.isfile(DATA_FILE) is True,\
+#     "dataset not found! did you run 'prepare-data.py?"
 
-# load the dataset
-df = pd.read_csv(
-    'data/bus.csv',
-    dtype={
-        'epoch': 'str',
-        'vid': 'category',
-        'lat': 'float32',
-        'lon': 'float32',
-        'hdg': 'Int16',
-        'des': 'category',
-        'dly': 'boolean',
-        'pdist': 'float32'
-    },
-    parse_dates=[
-        'epoch'
-    ],
+# # load the dataset
+# df = pd.read_csv(
+#     'data/bus.csv',
+#     dtype={
+#         'epoch': 'str',
+#         'vid': 'category',
+#         'lat': 'float32',
+#         'lon': 'float32',
+#         'hdg': 'Int16',
+#         'des': 'category',
+#         'dly': 'boolean',
+#         'pdist': 'float32'
+#     },
+#     parse_dates=[
+#         'epoch'
+#     ],
+# )
+
+## FAKE DATA 
+import numpy as np
+n = 100
+#epoch vid lon lat hdg des dly pdist
+df = pd.DataFrame(
+    {
+        'epoch' : np.random.randint(1000, 2000, n),
+        'vid': None,
+        'lon': np.random.randint(-90225,-90050, n) / 1000,
+        'lat': np.random.randint(2988, 3000, n) / 100,
+        'hdg' : None,
+        'des' : None,
+        'dly' : None,
+        'pdist': None,
+    }
 )
+
 df.set_index('epoch')
 
 # clean the data
@@ -31,8 +49,8 @@ df = df[(df['lat'] < 30.386759) & ( df['lat'] > 29.587366) &
 print("Removed {} Rows".format(_len - len(df.index)))
 
 # narrow down to just route 16
-df = df[(df['des'].str.contains('S. Claiborne Canal St via Poydras St.', na=False))|
-        (df['des'].str.contains('S. Claiborne Poydras St. to S. Carrollton Ave.'))]
+# df = df[(df['des'].str.contains('S. Claiborne Canal St via Poydras St.', na=False))|
+#         (df['des'].str.contains('S. Claiborne Poydras St. to S. Carrollton Ave.'))]
 
 #################################
 #         Main Visual
@@ -47,14 +65,14 @@ top = avg_lat + (9 * std_lat)
 rgt = avg_lon + (4 * std_lon)
 bot = avg_lat - (9 * std_lat)
 lef = avg_lon - (4 * std_lon)
-
-img = basemap.image(top, rgt, bot, lef, zoom=13,
+z = 10 # 16
+img = basemap.image(top, rgt, bot, lef, zoom=z,
     url="http://c.tile.stamen.com/toner/{z}/{x}/{y}.png")
 
 fig, ax = plt.subplots(figsize=(12,8))
 ax.scatter(df.lon, df.lat, alpha=0.1, c='red', s=1)
 ax.imshow(img, extent=(lef, rgt, bot, top), aspect= 'equal')
-plt.savefig('visuals/route-16-plot.png')
+plt.savefig(f'visuals/route-{z}-plot.png')
 
 #################################
 #     Self-Portrait Visual
@@ -98,7 +116,7 @@ import requests
 url = URL(x=x_tile, y=y_tile, z=zoom)
 
 # make the request
-with requests.get(url) as resp:
+with requests.get(url, headers={"User-Agent":"of_Bryan_Brattlof"}) as resp:
     resp.raise_for_status()
     img = Image.open(BytesIO(resp.content))
 
@@ -132,7 +150,8 @@ img = Image.new('RGB', (
 for x_tile, y_tile in product(range(x0_tile, x1_tile),
                               range(y0_tile, y1_tile)):
 
-    with requests.get(URL(x=x_tile, y=y_tile, z=zoom)) as resp:
+    with requests.get(URL(x=x_tile, y=y_tile, z=zoom), headers={"User-Agent":"of_Bryan_Brattlof"}) as resp:
+        resp.raise_for_status()
         tile_img = Image.open(BytesIO(resp.content))
 
     # add each tile to the full size image
