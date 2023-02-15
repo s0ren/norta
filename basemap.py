@@ -5,7 +5,7 @@ from PIL import Image
 import requests
 import math
 
-URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+URL = "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
 RADIUS = 6371   # earth's average radius in km
 TILE_SIZE = 256 # each tile's size in pixels
 
@@ -22,18 +22,22 @@ def point_to_pixels(lon, lat, zoom):
     return x, y
 
 
-def tile(session=None, **url_format_args):
+def tile(session=None, service_url=None, **url_format_args):
     """download tile as PIL.Image from Tile Server API"""
-    url = url_format_args.get('url', URL)
+    if service_url is None:
+        url = url_format_args.get('url', URL)
+    else:
+        url = url_format_args.get('url', service_url)
     if not session:
         session = requests
 
-    with session.get(url.format(**url_format_args)) as resp:
+    headers = {"User-Agent":"O-run_analysis"}
+    with session.get(url.format(**url_format_args), headers=headers) as resp:
         resp.raise_for_status()
         return Image.open(BytesIO(resp.content))
 
 
-def image(top, right, bottom, left, zoom=14, **tile_args):
+def image(top, right, bottom, left, zoom=15, **tile_args):
     """return an osm map from the given bounding box points"""
 
     # convert gps coordinates to web mercator
