@@ -3,7 +3,7 @@ Forked 16. february 2023
 
 by Søren Magnusson, with full credits and respekt to Bryan Brattlof. See links below.
 
-My intentions are to add some more funkcionality, for an even more genereal use. Hold on for more updates...
+My intentions are to add some more funcionality, for an even more genereal use. Hold on for more updates...
 
 
 New Orleans Regional Transit Authority
